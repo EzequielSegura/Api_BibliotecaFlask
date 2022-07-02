@@ -1,10 +1,16 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from config import config
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root@localhost/biblioteca'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+def create_app(enviroment):
+    app = Flask(__name__)
+
+    app.config.from_object(enviroment)
+
+    return app
+enviroment = config['development']
+app = create_app(enviroment)
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
@@ -19,14 +25,11 @@ class Libros(db.Model):
         self.isbn = isbn
         self.titulo = titulo
         self.autor = autor
-
 db.create_all()
 
 class LibroSchema(ma.Schema):
     class Meta:
         fields = ('isbn', 'titulo', 'autor')
-
-
 libro_schema = LibroSchema()
 libros_schema = LibroSchema(many=True)
 
@@ -73,7 +76,9 @@ def delete_libro(isbn):
 
 @app.route('/', methods=['GET'])
 def index():
-    return jsonify({'message': 'Welcome to my API'})
+    doc = jsonify({'message': 'Welcome to my API'}, {'/libros': 'Ver todos los libros'}, {'/libros/(ISBN)': 'Buscar libro por ISBN'})
+    
+    return doc
 
 if __name__ == "__main__":
     app.run(debug=True)
