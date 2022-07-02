@@ -3,12 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from config import config
 
+
 def create_app(enviroment):
     app = Flask(__name__)
-
     app.config.from_object(enviroment)
-
     return app
+
 enviroment = config['development']
 app = create_app(enviroment)
 
@@ -25,6 +25,7 @@ class Libros(db.Model):
         self.isbn = isbn
         self.titulo = titulo
         self.autor = autor
+        
 db.create_all()
 
 class LibroSchema(ma.Schema):
@@ -77,7 +78,6 @@ def delete_libro(isbn):
 @app.route('/', methods=['GET'])
 def index():
     doc = jsonify({'message': 'Welcome to my API'}, {'/libros': 'Ver todos los libros'}, {'/libros/(ISBN)': 'Buscar libro por ISBN'})
-    
     return doc
 
 if __name__ == "__main__":
