@@ -77,7 +77,9 @@ def delete_libro(isbn):
 
 @app.route('/', methods=['GET'])
 def index():
-    doc = jsonify({'message': 'Welcome to my API'}, {'/libros': 'Ver todos los libros'}, {'/libros/(ISBN)': 'Buscar libro por ISBN'})
+    doc = jsonify({'message': 'Welcome to my API'}, 
+                  {'/libros': 'Ver todos los libros'},
+                  {'/libros/(ISBN)': 'Buscar libro por ISBN'})
     return doc
 
 if __name__ == "__main__":
