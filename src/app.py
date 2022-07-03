@@ -18,7 +18,7 @@ ma = Marshmallow(app)
 
 class Libros(db.Model):
     isbn = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String(100), unique=True)
+    titulo = db.Column(db.String(100))
     autor = db.Column(db.String(100))
 
     def __init__(self, isbn, titulo, autor):
